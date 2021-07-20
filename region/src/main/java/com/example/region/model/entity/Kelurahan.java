@@ -5,8 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,10 +17,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "kelurahan")
 public class Kelurahan {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idKelurahan;
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Column(length = 10, nullable = false, unique = true)
     private String kelurahanCode;
 
@@ -29,4 +30,12 @@ public class Kelurahan {
     @Column()
     private boolean isDeleted = false;
     
+    @ManyToOne
+    @JoinColumn(name = "id_kecamatan")
+    private Kecamatan kecamatan;
+
+    public Kelurahan(String kelurahanCode, String kelurahanName){
+        this.kelurahanCode = kelurahanCode;
+        this.kelurahanName = kelurahanName;
+    }
 }

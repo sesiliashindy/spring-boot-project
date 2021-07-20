@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -15,12 +15,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "kabupaten")
+@Table(name = "kabupaten_kota")
 public class KabupatenKota {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idKabupatenKota;
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Column(length = 10, nullable = false, unique = true)
     private String kabupatenKotaCode;
 
@@ -30,7 +30,12 @@ public class KabupatenKota {
     @Column()
     private boolean isDeleted = false;
 
-    @ManyToMany
-    @JoinColumn(name = "kecamatan_code")
-    private Kecamatan kecamatan;
+    @ManyToOne
+    @JoinColumn(name = "id_provinsi")
+    private Provinsi provinsi;
+
+    public KabupatenKota(String kabupatenKotaCode, String kabupatenKotaName){
+        this.kabupatenKotaCode = kabupatenKotaCode;
+        this.kabupatenName = kabupatenKotaName;
+    }
 }

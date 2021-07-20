@@ -18,13 +18,21 @@ import lombok.NoArgsConstructor;
 public class Provinsi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idProvinsi;
+    private Integer id;
 
     @Column(length = 10, nullable = false, unique = true)
     private String provinsiCode;
 
     @Column(length = 50, nullable = false)
     private String provinsiName;
+
+    @Column()
+    private boolean isDeleted = false;
+
+    public Provinsi(String provinsiCode, String provinsiName){
+        this.provinsiCode = provinsiCode;
+        this.provinsiName = provinsiName;
+    }
 
     // @JoinColumn(name = "kabupatenKota_code")
     // private KabupatenKota kabupatenKota;
