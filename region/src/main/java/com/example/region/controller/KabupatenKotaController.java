@@ -1,12 +1,7 @@
 package com.example.region.controller;
 
-import java.util.List;
-
 import com.example.region.model.dto.KabupatenKotaDto;
-import com.example.region.model.entity.KabupatenKota;
-import com.example.region.model.entity.Provinsi;
-import com.example.region.repository.KabupatenKotaRepository;
-import com.example.region.repository.ProvinsiRepository;
+import com.example.region.service.KabupatenKotaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,48 +18,87 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/kab")
 public class KabupatenKotaController {
     @Autowired
-    private KabupatenKotaRepository kabupatenKotaRepository;
+    private KabupatenKotaService kabupatenKotaService;
 
-    // @Autowired
-    // private KecamatanRepository kecamatanRepository;
-    @Autowired
-    private ProvinsiRepository provinsiRepository;
-    
     @GetMapping("/all")
-    public ResponseEntity<?> getKK(){
-        List<KabupatenKota> kabKota = kabupatenKotaRepository.findAll();
-        return ResponseEntity.ok().body(kabKota);
+    public ResponseEntity<?> getAllKabKota(){
+        // try {
+        //     List<KabupatenKota> kabKota = kabupatenKotaRepository.findAll();
+        //     return ResponseEntity.ok().body(kabKota);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Couldn't Find Kabupaten");
+        // }
+        return kabupatenKotaService.getAllKabKota();
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<?> insertKK(@RequestBody KabupatenKotaDto dto){
-        KabupatenKota kabKota = new KabupatenKota();
-        kabKota.setKabupatenName(dto.getKabupatenKotaName());
-        kabKota.setKabupatenKotaCode(dto.getKabupatenKotaCode());
+    public ResponseEntity<?> insertKabKota(@RequestBody KabupatenKotaDto dto){
+        // KabupatenKota kabKota = new KabupatenKota();
+        // kabKota.setKabupatenName(dto.getKabupatenKotaName());
+        // kabKota.setKabupatenKotaCode(dto.getKabupatenKotaCode());
 
-        // Kecamatan kecamatan = kecamatanRepository.findByKecamatanCode(dto.getKecamatanCode());
-        Provinsi provinsi = provinsiRepository.findByProvinsiCode(dto.getProvinsiCode());
-        kabKota.setProvinsi(provinsi);
-        kabupatenKotaRepository.save(kabKota);
+        // Provinsi provinsi = provinsiRepository.findByProvinsiCode(dto.getProvinsiCode());
+        // kabKota.setProvinsi(provinsi);
+        // kabupatenKotaRepository.save(kabKota);
         
-        return ResponseEntity.ok().body(kabKota);
+        // return ResponseEntity.ok().body(kabKota);
+        return kabupatenKotaService.insertKabKota(dto);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateKK(@RequestBody KabupatenKotaDto dto, @PathVariable Integer id){
-        KabupatenKota kabKot = kabupatenKotaRepository.findById(id).get();
-        kabKot.setKabupatenName(dto.getKabupatenKotaName());
-        kabKot.setKabupatenKotaCode(dto.getKabupatenKotaCode());
-        kabupatenKotaRepository.save(kabKot);
-        return ResponseEntity.ok().body(kabKot);
+    public ResponseEntity<?> updateKabKota(@RequestBody KabupatenKotaDto dto, @PathVariable Integer id){
+        // KabupatenKota kabKot = kabupatenKotaRepository.findById(id).get();
+        // kabKot.setKabupatenName(dto.getKabupatenKotaName());
+        // kabKot.setKabupatenKotaCode(dto.getKabupatenKotaCode());
+        // kabupatenKotaRepository.save(kabKot);
+        // return ResponseEntity.ok().body(kabKot);
+        return kabupatenKotaService.updateKabKota(dto, id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteKK(@PathVariable Integer id){
-        KabupatenKota kabKot = kabupatenKotaRepository.findById(id).get();
-        kabKot.setDeleted(true);
-        kabupatenKotaRepository.save(kabKot);
-        return ResponseEntity.ok().body(kabKot);
+    public ResponseEntity<?> deleteKabKota(@PathVariable Integer id){
+        // try {
+        //     KabupatenKota kabKot = kabupatenKotaRepository.findById(id).get();
+        //     kabKot.setDeleted(true);
+        //     kabupatenKotaRepository.save(kabKot);
+        //     return ResponseEntity.ok().body(kabKot);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Id Not Found!");
+        // }
+        return kabupatenKotaService.deleteKabKota(id);
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<?> getKabKotaActive() {
+        // try {
+        //     List<KabupatenKota> kabKota = kabupatenKotaRepository.findByIsDeleted(false);
+        //     return ResponseEntity.ok().body(kabKota);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Couldn't reach database");
+        // }
+        return kabupatenKotaService.getKabKotaActive();
+    }
+
+    @GetMapping("/byFK/{code}")
+    public ResponseEntity<?> getByKabKotaFk(@PathVariable String code) {
+        // try {
+        //     KabupatenKota kabKota = kabupatenKotaRepository.findByKabupatenKotaCode(code);
+        //     List<Kecamatan> kecamatan = kecamatanRepository.findByKabupatenKota(kabKota);
+        //     return ResponseEntity.ok().body(kecamatan);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Kabupaten or Kota Code Not Found!");
+        // }
+        return kabupatenKotaService.getByKabKotaFk(code);
+    }
+
+    @GetMapping("/by/{id}")
+    public ResponseEntity<?> getByIdKabKota(@PathVariable Integer id) {
+        // try {
+        //     KabupatenKota kabKota = kabupatenKotaRepository.findById(id).get();
+        //     return ResponseEntity.ok().body(kabKota);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Id Not Found!");
+        // }
+        return kabupatenKotaService.getByIdKabKota(id);
+    }
 }

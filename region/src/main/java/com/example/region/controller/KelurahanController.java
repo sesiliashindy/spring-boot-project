@@ -1,12 +1,7 @@
 package com.example.region.controller;
 
-import java.util.List;
-
 import com.example.region.model.dto.KelurahanDto;
-import com.example.region.model.entity.Kecamatan;
-import com.example.region.model.entity.Kelurahan;
-import com.example.region.repository.KecamatanRepository;
-import com.example.region.repository.KelurahanRepository;
+import com.example.region.service.KelurahanService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,43 +18,86 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/kel")
 public class KelurahanController {
     @Autowired
-    private KelurahanRepository kelurahanRepository;
-
-    @Autowired
-    private KecamatanRepository kecamatanRepository;
+    private KelurahanService kelurahanService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getKel(){
-        List<Kelurahan> kelurahan = kelurahanRepository.findAll();
-        return ResponseEntity.ok().body(kelurahan);
+    public ResponseEntity<?> getAllKelurahan(){
+        // try {
+        //     List<Kelurahan> kelurahan = kelurahanRepository.findAll();
+        //     return ResponseEntity.ok().body(kelurahan);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Couldn't Find Kelurahan");
+        // }
+        return kelurahanService.getAllKelurahan();
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<?> insertKel(@RequestBody KelurahanDto dto){
-        Kelurahan kelurahan = new Kelurahan();
-        kelurahan.setKelurahanName(dto.getKelurahanName());
-        kelurahan.setKelurahanCode(dto.getKelurahanCode());
+    public ResponseEntity<?> insertKelurahan(@RequestBody KelurahanDto dto){
+        // Kelurahan kelurahan = new Kelurahan();
+        // kelurahan.setKelurahanName(dto.getKelurahanName());
+        // kelurahan.setKelurahanCode(dto.getKelurahanCode());
         
-        Kecamatan kecamatan = kecamatanRepository.findByKecamatanCode(dto.getKecamatanCode());
-        kelurahan.setKecamatan(kecamatan);
-        kelurahanRepository.save(kelurahan);
-        return ResponseEntity.ok().body(kelurahan);
+        // Kecamatan kecamatan = kecamatanRepository.findByKecamatanCode(dto.getKecamatanCode());
+        // kelurahan.setKecamatan(kecamatan);
+        // kelurahanRepository.save(kelurahan);
+        // return ResponseEntity.ok().body(kelurahan);
+        return kelurahanService.insertKelurahan(dto);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateKel(@RequestBody KelurahanDto dto, @PathVariable Integer id){
-        Kelurahan kelurahan = kelurahanRepository.findById(id).get();
-        kelurahan.setKelurahanName(dto.getKelurahanName());
-        kelurahan.setKelurahanCode(dto.getKelurahanCode());
-        kelurahanRepository.save(kelurahan);
-        return ResponseEntity.ok().body(kelurahan);
+    public ResponseEntity<?> updateKelurahan(@RequestBody KelurahanDto dto, @PathVariable Integer id){
+        // Kelurahan kelurahan = kelurahanRepository.findById(id).get();
+        // kelurahan.setKelurahanName(dto.getKelurahanName());
+        // kelurahan.setKelurahanCode(dto.getKelurahanCode());
+        // kelurahanRepository.save(kelurahan);
+        // return ResponseEntity.ok().body(kelurahan);
+        return kelurahanService.updateKelurahan(dto, id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteKec(@PathVariable Integer id){
-        Kelurahan kelurahan = kelurahanRepository.findById(id).get();
-        kelurahan.setDeleted(true);
-        kelurahanRepository.save(kelurahan);
-        return ResponseEntity.ok().body(kelurahan);
+    public ResponseEntity<?> deleteKelurahan(@PathVariable Integer id){
+        // try {
+        //     Kelurahan kelurahan = kelurahanRepository.findById(id).get();
+        //     kelurahan.setDeleted(true);
+        //     kelurahanRepository.save(kelurahan);
+        //     return ResponseEntity.ok().body(kelurahan);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Id Not Found!");
+        // }
+        return kelurahanService.deleteKelurahan(id);
     }
+
+    @GetMapping("/active")
+    public ResponseEntity<?> getKelurahanActive() {
+        // try {
+        //     List<Kelurahan> kelurahan = kelurahanRepository.findByIsDeleted(false);
+        //     return ResponseEntity.ok().body(kelurahan);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Couldn't reach database");
+        // }
+        return kelurahanService.getKelurahanActive();
+    }
+
+    @GetMapping("/byFK/{code}")
+    public ResponseEntity<?> getByKelurahanFk(@PathVariable String code) {
+        // try {
+        //     Kelurahan kelurahan = kelurahanRepository.findByKelurahanCode(code);
+        //     return ResponseEntity.ok().body(kelurahan);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Kelurahan Code Not Found!");
+        // }
+        return kelurahanService.getByKelurahanFk(code);
+    }
+
+    @GetMapping("/by/{id}")
+    public ResponseEntity<?> getByIdKelurahan(@PathVariable Integer id) {
+        // try {
+        //     Kelurahan kelurahan = kelurahanRepository.findById(id).get();
+        //     return ResponseEntity.ok().body(kelurahan);
+        // } catch (Exception e) {
+        //     return ResponseEntity.badRequest().body("Kelurahan Id Not Found!");
+        // }
+        return kelurahanService.getByIdKelurahan(id);
+    }
+    
 }
